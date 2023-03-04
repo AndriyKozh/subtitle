@@ -1,45 +1,56 @@
 const natural = require("natural");
 const fs = require("fs");
 const tokenizer = new natural.WordTokenizer();
-const resultSubtitle = require("./5DGDv4mQWZc/resultSubtitle.json");
+const arrHistory = require("./arrHistory/arrTest");
 
-const stemmer = natural.PorterStemmer;
-const folderPath = "./myFolder";
-const fileName = "result.json";
+function countWord(arrHistory) {
+  for (let i = 0; i < arrHistory.length; i++) {
+    const arrRes = arrHistory[i];
+    const arrId = arrRes.titleUrl.slice(32, 47);
 
-const text = resultSubtitle.join(" ");
+    const resultSubtitle = require(`./json_subtitle/${arrId}/next_${arrId}.json`);
+    console.log(resultSubtitle);
 
-// Tokenize the text into individual words
-const tokens = tokenizer.tokenize(text);
+    const stemmer = natural.PorterStemmer;
+    const folderPath = `./json_subtitle/${arrId}`;
+    const fileName = `count_${arrId}.json`;
 
-// Generate stems for each word
-const stems = tokens.map((token) => stemmer.stem(token));
+    const text = resultSubtitle.join(" ");
 
-// Count unique stems and their frequency of occurrence
-const stemCounts = stems.reduce((counts, stem) => {
-  if (counts[stem]) {
-    counts[stem]++;
-  } else {
-    counts[stem] = 1;
+    // Tokenize the text into individual words
+    const tokens = tokenizer.tokenize(text);
+
+    // Generate stems for each word
+    const stems = tokens.map((token) => stemmer.stem(token));
+
+    // Count unique stems and their frequency of occurrence
+    const stemCounts = stems.reduce((counts, stem) => {
+      if (counts[stem]) {
+        counts[stem]++;
+      } else {
+        counts[stem] = 1;
+      }
+      return counts;
+    }, {});
+
+    // console.log(stemCounts);
+
+    const stemFrequencies = stems.reduce((freqs, stem) => {
+      freqs[stem] = (freqs[stem] || 0) + 1;
+      return freqs;
+    }, {});
+    console.log(stemFrequencies);
+    fs.writeFile(
+      `${folderPath}/${fileName}`,
+      JSON.stringify(stemFrequencies),
+      (err) => {
+        if (err) throw err;
+        console.log("The file has been saved!");
+      }
+    );
   }
-  return counts;
-}, {});
-
-// console.log(stemCounts);
-
-const stemFrequencies = stems.reduce((freqs, stem) => {
-  freqs[stem] = (freqs[stem] || 0) + 1;
-  return freqs;
-}, {});
-console.log(stemFrequencies);
-fs.writeFile(
-  `${folderPath}/${fileName}`,
-  JSON.stringify(stemFrequencies),
-  (err) => {
-    if (err) throw err;
-    console.log("The file has been saved!");
-  }
-);
+}
+countWord(arrHistory);
 
 // const fs = require("fs");
 

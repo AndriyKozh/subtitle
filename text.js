@@ -1,32 +1,43 @@
 const natural = require("natural");
 
 const fs = require("fs");
-const arr = require("./5DGDv4mQWZc/5DGDv4mQWZc.json");
-const resKey = arr.join(" ");
+const arrHistory = require("./arrHistory/arrTest");
 
-//filters only words from subtitles
+function inText(arrHistory) {
+  for (let i = 0; i < arrHistory.length; i++) {
+    const arrRes = arrHistory[i];
+    const arrId = arrRes.titleUrl.slice(32, 47);
+    console.log(arrId);
 
-const arrText = resKey.split(" ");
-const input = resKey;
+    const arr = require(`./json_subtitle/${arrId}/${arrId}.json`);
+    const resKey = arr.join(" ");
 
-const regex = /[a-zA-Zа-яА-Я]+/g;
+    //filters only words from subtitles
 
-const words = input.match(regex);
+    // const arrText = resKey.split(" ");
+    const input = resKey;
 
-const stemmer = natural.PorterStemmerRu;
+    const regex = /[a-zA-Zа-яА-Я]+/g;
 
-const stems = words.map((word) => stemmer.stem(word));
-console.log(stems); // Output: ['AeBo4K', ' ABO4K', 'ABO4K', AeBO4K
+    const words = input.match(regex);
 
-fs.writeFile(
-  "./5DGDv4mQWZc/resultSubtitle.json",
-  JSON.stringify(stems),
-  (err) => {
-    if (err) throw err;
-    console.log("The file has been saved!");
+    const stemmer = natural.PorterStemmerRu;
+
+    const stems = words.map((word) => stemmer.stem(word));
+    console.log(stems); // Output: ['AeBo4K', ' ABO4K', 'ABO4K', AeBO4K
+
+    fs.writeFile(
+      `./json_subtitle/${arrId}/next_${arrId}.json`,
+      JSON.stringify(stems),
+      (err) => {
+        if (err) throw err;
+        console.log("The file has been saved!");
+      }
+    );
   }
-);
+}
 
+inText(arrHistory);
 //////////////////////////////////////////////////////////////////////
 
 //витягує всі кириличні символи

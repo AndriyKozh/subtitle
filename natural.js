@@ -1,28 +1,38 @@
 const fs = require("fs");
 const natural = require("natural");
+const arrHistory = require("./arrHistory/arrTest");
 
-const vttFilePath = "./subtitleVTT/5DGDv4mQWZc.ru.vtt";
+function textInJson(arrHistory) {
+  for (let i = 0; i < arrHistory.length; i++) {
+    const arrRes = arrHistory[i];
+    const arrId = arrRes.titleUrl.slice(32, 47);
+    console.log(arrId);
 
-const folderPath = "5DGDv4mQWZc";
-const fileName = "5DGDv4mQWZc.json";
-const folderName = "5DGDv4mQWZc";
-const a = [];
-fs.readFile(vttFilePath, "utf8", (err, data) => {
-  if (err) throw err;
-  const vttString = data;
-  // const stemCounts = stemAndCount(vttString);
-  a.push(vttString);
-  console.log(a);
+    const vttFilePath = `./subtitleVTT/${arrId}.ru.vtt`;
 
-  // Create the folder
-  fs.mkdir(folderName, (err) => {
-    if (err) throw err;
-    console.log("Folder created successfully.");
-  });
+    const folderPath = "json_subtitle";
+    const fileName = `./${arrId}/${arrId}.json`;
+    const folderName = `./json_subtitle/${arrId}`;
+    const a = [];
+    fs.readFile(vttFilePath, "utf8", (err, data) => {
+      if (err) throw err;
+      const vttString = data;
+      // const stemCounts = stemAndCount(vttString);
+      a.push(vttString);
+      console.log(a);
 
-  // Write the `a` variable to a new file
-  fs.writeFile(`${folderPath}/${fileName}`, JSON.stringify(a), (err) => {
-    if (err) throw err;
-    console.log("The file has been saved!");
-  });
-});
+      // Create the folder
+      fs.mkdir(folderName, (err) => {
+        if (err) throw err;
+        console.log("Folder created successfully.");
+      });
+
+      // Write the `a` variable to a new file
+      fs.writeFile(`${folderPath}/${fileName}`, JSON.stringify(a), (err) => {
+        if (err) throw err;
+        console.log("The file has been saved!");
+      });
+    });
+  }
+}
+textInJson(arrHistory);
