@@ -1,0 +1,24 @@
+{
+  "name": "subtitle_youtube",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "googleapis": "^111.0.0",
+    "lemmatizer": "^0.0.1",
+    "natural": "^6.2.0",
+    "nlp_compromise": "^7.0.0",
+    "node-nlp": "^4.26.1",
+    "nodemon": "^2.0.20",
+    "path": "^0.12.7",
+    "python-shell": "^5.0.0",
+    "subtitle-converter": "^3.0.12",
+    "youtube-dl-exec": "^2.3.1"
+  }
+}
